@@ -8,12 +8,16 @@
 
 import UIKit
 
-class CustomFooterView : UITableViewHeaderFooterView {
+var lineBreakMode: NSLineBreakMode = .byWordWrapping
+var estimatedHeight: CGFloat = 2.0
+
+class CustomHeaderFooterView : UITableViewHeaderFooterView {
 
     var customTitleLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.numberOfLines = 0
         $0.font = UIFont.systemFont(ofSize: 30)
+        $0.lineBreakMode = lineBreakMode
         return $0
     } (UILabel())
     
@@ -47,6 +51,9 @@ class CustomFooterView : UITableViewHeaderFooterView {
 
 class TableViewDataSource : NSObject, UITableViewDataSource {
     
+    var headersEnabled = true
+    var footersEnabled = true
+    
     var numberOfSections: Int = 100
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -59,36 +66,68 @@ class TableViewDataSource : NSObject, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        
-        cell.textLabel!.text = "Section \(indexPath.section)"
+        cell.detailTextLabel!.text = "s\(indexPath.section)"
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        let text = ((0..<section).map {"\($0)"}).joined(separator: "\n")
-        return text
+        guard footersEnabled else {
+            return nil
+        }
+        let text = ((0...section).map {"f\(section)-\($0)"}).joined(separator: "\n")
+        return /*"The quick brown fox jumps over the lazy dog" + */text
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard headersEnabled else {
+            return nil
+        }
+        let text = ((0...section).map {"h\(section)-\($0)"}).joined(separator: "\n")
+        return /*"The quick brown fox jumps over the lazy dog" + */text
+    }
+    
 }
 
 class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
     func prepare(_ tableView: UITableView) {
-        tableView.register(CustomFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
+        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
+        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")! as! CustomFooterView
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")! as! CustomHeaderFooterView
         let title = tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section)
-        footerView.customTitleLabel.text = title
-        return footerView
+        headerFooterView.customTitleLabel.text = title
+        return headerFooterView
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header")! as! CustomHeaderFooterView
+        let title = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section)
+        headerFooterView.customTitleLabel.text = title
+        return headerFooterView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        print("\(#function): \(section)")
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 30
+        return estimatedHeight
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return estimatedHeight
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("\(#function): \(indexPath.section)")
     }
     
 }
@@ -97,19 +136,37 @@ class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
     func prepare(_ tableView: UITableView) {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")
-        return footerView
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")
+        return headerFooterView
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header")
+        return headerFooterView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return 30
+        print("\(#function): \(section)")
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        return dataSource.footersEnabled ? estimatedHeight : 0
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        print("\(#function): \(section)")
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        return dataSource.headersEnabled ? estimatedHeight : 0
     }
     
 }
@@ -161,4 +218,76 @@ class MasterViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    // MARK: -
+    
+    @IBOutlet var footersBarItem: UIBarButtonItem!
+    
+    func updateFootersBarItem() {
+        footersBarItem.title = "Footers: " + (tableViewDataSource.footersEnabled ? "ON" : "OFF")
+    }
+    @IBAction func toggleFooters() {
+        tableViewDataSource.footersEnabled = !tableViewDataSource.footersEnabled
+        updateFootersBarItem()
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var headersBarItem: UIBarButtonItem!
+    
+    func updateHeadersBarItem() {
+        headersBarItem.title = "Headers: " + (tableViewDataSource.headersEnabled ? "ON" : "OFF")
+    }
+    @IBAction func toggleHeaders() {
+        tableViewDataSource.headersEnabled = !tableViewDataSource.headersEnabled
+        updateHeadersBarItem()
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var lineBreakModeItem: UIBarButtonItem!
+    
+    func updateLineBreakModeItem() {
+        lineBreakModeItem.title = {
+            switch lineBreakMode {
+            case .byWordWrapping:
+                return "byWordWrapping"
+            case .byTruncatingTail:
+                return "byTruncatingTail"
+            default:
+                fatalError()
+            }
+        }()
+    }
+    
+    @IBAction func toggleLineBreakMode() {
+        lineBreakMode = {
+            switch lineBreakMode {
+            case .byWordWrapping:
+                return .byTruncatingTail
+            case .byTruncatingTail:
+                return .byWordWrapping
+            default:
+                fatalError()
+            }
+        }()
+        updateLineBreakModeItem()
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var estimatedHeightStepper: UIStepper!
+    @IBOutlet var estimatedHeightBarItem: UIBarButtonItem!
+
+    func updateEstimatedHeightBarItem() {
+        estimatedHeightBarItem.title = "\(estimatedHeight)"
+    }
+    
+    @IBAction func estimatedHeightStepperValueChanged() {
+        estimatedHeight = CGFloat(estimatedHeightStepper.value)
+        updateEstimatedHeightBarItem()
+        tableView.reloadData()
+    }
 }
