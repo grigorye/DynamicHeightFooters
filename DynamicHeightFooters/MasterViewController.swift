@@ -147,7 +147,7 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard customCellsEnabled else {
-            return 44 ///!!!
+            return 44 //!!!
         }
         return UITableViewAutomaticDimension
     }
