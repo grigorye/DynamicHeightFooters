@@ -8,8 +8,15 @@
 
 import UIKit
 
-var lineBreakMode: NSLineBreakMode = .byWordWrapping
-var estimatedHeight: CGFloat = 2.0
+var customCellsEnabled = false
+var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
+var estimatedHeight: CGFloat = 2.0 //!!!
+
+class CustomTableViewCell : UITableViewCell {
+    
+    @IBOutlet var customTitleLabel: UILabel!
+    
+}
 
 class CustomHeaderFooterView : UITableViewHeaderFooterView {
 
@@ -65,9 +72,17 @@ class TableViewDataSource : NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.detailTextLabel!.text = "s\(indexPath.section)"
-        return cell
+        if customCellsEnabled {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
+            let section = indexPath.section
+            let text = ((0...section).map {"\($0)-s\(section)"}).joined(separator: "\n")
+            cell.customTitleLabel.text = text
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            cell.detailTextLabel!.text = "s\(indexPath.section)"
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -110,26 +125,51 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.footersEnabled else {
+            return 0
+        }
         return UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print("\(#function): \(section)")
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.headersEnabled else {
+            return 0
+        }
         return UITableViewAutomaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard customCellsEnabled else {
+            return 44 ///!!!
+        }
+        return UITableViewAutomaticDimension
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard customCellsEnabled else {
+            return 0
+        }
+        return (estimatedHeight < 1) ? 0 : max(2, estimatedHeight) //!!!
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.footersEnabled else {
+            return 0
+        }
         return estimatedHeight
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.headersEnabled else {
+            return 0
+        }
         return estimatedHeight
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("\(#function): \(indexPath.section)")
-    }
-    
+
 }
 
 class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
@@ -158,13 +198,11 @@ class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        print("\(#function): \(section)")
         let dataSource = tableView.dataSource! as! TableViewDataSource
         return dataSource.footersEnabled ? estimatedHeight : 0
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        print("\(#function): \(section)")
         let dataSource = tableView.dataSource! as! TableViewDataSource
         return dataSource.headersEnabled ? estimatedHeight : 0
     }
@@ -215,6 +253,19 @@ class MasterViewController: UITableViewController {
         super.viewDidLoad()
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDelegate
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var customCellsBarItem: UIBarButtonItem!
+    
+    func updateCustomCellsBarItem() {
+        customCellsBarItem.title = "Cust. Cells: " + (customCellsEnabled ? "ON" : "OFF")
+    }
+    @IBAction func toggleCustomCells() {
+        customCellsEnabled = !customCellsEnabled
+        updateCustomCellsBarItem()
         tableView.reloadData()
     }
     
