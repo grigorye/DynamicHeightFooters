@@ -11,6 +11,9 @@ import UIKit
 var customCellsEnabled = false
 var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
 var estimatedHeight: CGFloat = 2.0 //!!!
+var estimatedRowHeight: CGFloat {
+	return estimatedHeight
+}
 
 class CustomTableViewCell : UITableViewCell {
     
@@ -153,7 +156,13 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard customCellsEnabled else {
             return 0
         }
-        return (estimatedHeight < 1) ? 0 : max(2, estimatedHeight) //!!!
+		guard 1 <= estimatedRowHeight else {
+			return 0
+		}
+		guard 2 < estimatedRowHeight else {
+			return 2
+		}
+		return estimatedRowHeight //!!!
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
