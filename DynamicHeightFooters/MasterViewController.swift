@@ -31,15 +31,17 @@ class CustomHeaderFooterView : UITableViewHeaderFooterView {
     func prepareForUse() {
         textLabel!.isHidden = true
         contentView.addSubview(customTitleLabel)
+		assert(preservesSuperviewLayoutMargins)
+		assert(contentView.preservesSuperviewLayoutMargins)
         NSLayoutConstraint.activate({
-            let attributes: [NSLayoutAttribute] = [
-                .trailingMargin,
-                .leadingMargin,
-                .topMargin,
-                .bottomMargin
+			let otherItemsAndAttirbutes: [(item: Any, attribute: NSLayoutAttribute)] = [
+				(layoutMarginsGuide, .trailing), //!!!
+                (layoutMarginsGuide, .leading), //!!!
+                (contentView, .topMargin), //!!!
+                (contentView, .bottomMargin) //!!!
             ]
-            return attributes.map {
-                NSLayoutConstraint(item: customTitleLabel, attribute: $0, relatedBy: .equal, toItem: contentView, attribute: $0, multiplier: 1, constant: 0)
+            return otherItemsAndAttirbutes.map {
+                NSLayoutConstraint(item: customTitleLabel, attribute: $0.attribute, relatedBy: .equal, toItem: $0.item, attribute: $0.attribute, multiplier: 1, constant: 0)
             }
         }())
     }
