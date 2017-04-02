@@ -9,11 +9,16 @@
 import UIKit
 
 var customCellsEnabled = false
+
 var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
+
 var estimatedHeight: CGFloat = 2.0 //!!!
+
 var estimatedRowHeight: CGFloat {
 	return estimatedHeight
 }
+
+typealias L = Localized
 
 class CustomTableViewCell : UITableViewCell {
     
@@ -272,8 +277,9 @@ class MasterViewController: UITableViewController {
     @IBOutlet var customCellsBarItem: UIBarButtonItem!
     
     func updateCustomCellsBarItem() {
-        customCellsBarItem.title = "Cust. Cells: " + (customCellsEnabled ? "ON" : "OFF")
+		customCellsBarItem.title = L.customCellsBarItemTitle(forEnabled: customCellsEnabled)
     }
+	
     @IBAction func toggleCustomCells() {
         customCellsEnabled = !customCellsEnabled
         updateCustomCellsBarItem()
@@ -285,8 +291,9 @@ class MasterViewController: UITableViewController {
     @IBOutlet var footersBarItem: UIBarButtonItem!
     
     func updateFootersBarItem() {
-        footersBarItem.title = "Footers: " + (tableViewDataSource.footersEnabled ? "ON" : "OFF")
+		footersBarItem.title = L.footersBarItemTitle(forEnabled: tableViewDataSource.footersEnabled)
     }
+	
     @IBAction func toggleFooters() {
         tableViewDataSource.footersEnabled = !tableViewDataSource.footersEnabled
         updateFootersBarItem()
@@ -298,7 +305,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var headersBarItem: UIBarButtonItem!
     
     func updateHeadersBarItem() {
-        headersBarItem.title = "Headers: " + (tableViewDataSource.headersEnabled ? "ON" : "OFF")
+        headersBarItem.title = L.headersBarItemTitle(forEnabled: tableViewDataSource.headersEnabled)
     }
     @IBAction func toggleHeaders() {
         tableViewDataSource.headersEnabled = !tableViewDataSource.headersEnabled
@@ -311,16 +318,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var lineBreakModeItem: UIBarButtonItem!
     
     func updateLineBreakModeItem() {
-        lineBreakModeItem.title = {
-            switch lineBreakMode {
-            case .byWordWrapping:
-                return "byWordWrapping"
-            case .byTruncatingTail:
-                return "byTruncatingTail"
-            default:
-                fatalError()
-            }
-        }()
+		lineBreakModeItem.title = L.lineBreakModeBarItemTitle(for: lineBreakMode)
     }
     
     @IBAction func toggleLineBreakMode() {
