@@ -267,6 +267,9 @@ class MasterViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+		updateFootersBarItem()
+		updateHeadersBarItem()
+		updateCustomCellsBarItem()
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDelegate
         tableView.reloadData()
