@@ -277,7 +277,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var customCellsBarItem: UIBarButtonItem!
     
     func updateCustomCellsBarItem() {
-		customCellsBarItem.title = L.customCellsBarItemTitle(forEnabled: customCellsEnabled)
+		(customCellsBarItem.customView as! UIButton).isSelected = customCellsEnabled
     }
 	
     @IBAction func toggleCustomCells() {
@@ -291,7 +291,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var footersBarItem: UIBarButtonItem!
     
     func updateFootersBarItem() {
-		footersBarItem.title = L.footersBarItemTitle(forEnabled: tableViewDataSource.footersEnabled)
+		(footersBarItem.customView as! UIButton).isSelected = tableViewDataSource.footersEnabled
     }
 	
     @IBAction func toggleFooters() {
@@ -305,7 +305,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var headersBarItem: UIBarButtonItem!
     
     func updateHeadersBarItem() {
-        headersBarItem.title = L.headersBarItemTitle(forEnabled: tableViewDataSource.headersEnabled)
+		(headersBarItem.customView as! UIButton).isSelected = tableViewDataSource.headersEnabled
     }
     @IBAction func toggleHeaders() {
         tableViewDataSource.headersEnabled = !tableViewDataSource.headersEnabled

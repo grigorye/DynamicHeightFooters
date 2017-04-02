@@ -131,49 +131,76 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Headers: ON" id="snd-68-HVi">
-                            <connections>
-                                <action selector="toggleHeaders" destination="7bK-jq-Zjz" id="I15-A3-yTJ"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="mTt-fo-PZO"/>
-                        <barButtonItem title="Cust. Cells: OFF" id="KTa-w2-byT">
-                            <connections>
-                                <action selector="toggleCustomCells" destination="7bK-jq-Zjz" id="hjY-8M-RxD"/>
-                            </connections>
+                        <barButtonItem style="plain" id="sym-KY-nYG">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LdN-Vq-JZe">
+                                <rect key="frame" x="16" y="5.5" width="102" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Custom Cells"/>
+                                <state key="selected">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleCustomCells" destination="7bK-jq-Zjz" eventType="touchUpInside" id="FnW-o5-ImT"/>
+                                </connections>
+                            </button>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dcp-H6-CVm"/>
-                        <barButtonItem title="Footers: ON" id="EMw-bW-65c">
-                            <connections>
-                                <action selector="toggleFooters" destination="7bK-jq-Zjz" id="dRo-aj-b0x"/>
-                            </connections>
+                        <barButtonItem title="2.0" id="zyB-6F-v8u"/>
+                        <barButtonItem id="wZw-O3-ggi">
+                            <stepper key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" maximumValue="100" id="gH4-nl-pHp">
+                                <rect key="frame" x="265" y="7.5" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="estimatedHeightStepperValueChanged" destination="7bK-jq-Zjz" eventType="valueChanged" id="c4O-Ac-nx5"/>
+                                </connections>
+                            </stepper>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Zdf-7t-Un8">
-                        <barButtonItem key="leftBarButtonItem" title="byWordWrapping" id="Jr3-Zh-3yh">
+                        <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="LB: WW" id="Jr3-Zh-3yh">
                             <connections>
                                 <action selector="toggleLineBreakMode" destination="7bK-jq-Zjz" id="E1p-NJ-BY2"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem id="wZw-O3-ggi">
-                                <stepper key="customView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" maximumValue="100" id="gH4-nl-pHp">
-                                    <rect key="frame" x="265" y="7" width="94" height="29"/>
+                            <barButtonItem style="plain" id="rFr-Ia-l7n">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="peF-xu-EsQ">
+                                    <rect key="frame" x="276" y="5" width="83" height="33"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" title="Headers"/>
+                                    <state key="selected">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
                                     <connections>
-                                        <action selector="estimatedHeightStepperValueChanged" destination="7bK-jq-Zjz" eventType="valueChanged" id="c4O-Ac-nx5"/>
+                                        <action selector="toggleHeaders" destination="7bK-jq-Zjz" eventType="touchUpInside" id="piB-0X-aOD"/>
                                     </connections>
-                                </stepper>
+                                </button>
                             </barButtonItem>
-                            <barButtonItem title="2.0" id="zyB-6F-v8u"/>
+                            <barButtonItem style="plain" id="ISM-wa-heE">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7e1-MA-G2P">
+                                    <rect key="frame" x="185" y="7" width="83" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" title="Footers"/>
+                                    <state key="selected">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="toggleFooters" destination="7bK-jq-Zjz" eventType="touchUpInside" id="eXJ-ZR-oXn"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="customCellsBarItem" destination="KTa-w2-byT" id="rgf-vi-RWZ"/>
+                        <outlet property="customCellsBarItem" destination="sym-KY-nYG" id="9qR-UC-Gx9"/>
                         <outlet property="estimatedHeightBarItem" destination="zyB-6F-v8u" id="XMm-az-xVI"/>
                         <outlet property="estimatedHeightStepper" destination="gH4-nl-pHp" id="tuB-N3-xt5"/>
-                        <outlet property="footersBarItem" destination="EMw-bW-65c" id="iNM-Um-PI0"/>
-                        <outlet property="headersBarItem" destination="snd-68-HVi" id="rp9-jS-vLZ"/>
+                        <outlet property="footersBarItem" destination="ISM-wa-heE" id="Uz5-Bd-hSB"/>
+                        <outlet property="headersBarItem" destination="rFr-Ia-l7n" id="Goo-32-QcJ"/>
                         <outlet property="lineBreakModeItem" destination="Jr3-Zh-3yh" id="Asd-u0-uPZ"/>
                     </connections>
                 </tableViewController>
