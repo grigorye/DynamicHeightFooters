@@ -15,12 +15,25 @@ struct Localized {
 extension Localized {
 	
 	static func lineBreakModeBarItemTitle(for lineBreakMode: NSLineBreakMode) -> String {
-		return "LB: " + {
+		return "LB:" + {
 			switch lineBreakMode {
 			case .byWordWrapping:
 				return "WW"
 			case .byTruncatingTail:
-			return "TT"
+				return "TT"
+			default:
+				fatalError()
+			}
+		}()
+	}
+	
+	static func delegateKindBarItemTitle(for delegateKind: MasterViewController.DelegateKind) -> String {
+		return "DK:" + {
+			switch delegateKind {
+			case .none:
+				return "-"
+			case .dynamic(_):
+				return "D"
 			default:
 				fatalError()
 			}
