@@ -18,6 +18,9 @@ private var estimatedRowHeight: CGFloat {
 	return estimatedHeight
 }
 
+var _true = true
+var _false = true
+
 typealias L = Localized
 
 class CustomTableViewCell : UITableViewCell {
@@ -41,7 +44,11 @@ class CustomHeaderFooterView : UITableViewHeaderFooterView {
         contentView.addSubview(customTitleLabel)
 		assert(preservesSuperviewLayoutMargins)
 		assert(contentView.preservesSuperviewLayoutMargins)
+        assert(self.translatesAutoresizingMaskIntoConstraints)
+        assert(contentView.translatesAutoresizingMaskIntoConstraints)
+        assert(contentView.autoresizesSubviews)
         NSLayoutConstraint.activate({
+            let layoutMarginsGuide = contentView.layoutMarginsGuide
 			let otherItemsAndAttirbutes: [(item: Any, attribute: NSLayoutAttribute)] = [
 				(layoutMarginsGuide, .trailing), //!!!
                 (layoutMarginsGuide, .leading), //!!!
@@ -115,20 +122,28 @@ class TableViewDataSource : NSObject, UITableViewDataSource {
 
 class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
+    struct ReuseIdentifiers {
+        static let header = "DCHeader"
+        static let footer = "DCFooter"
+    }
+    
     func prepare(_ tableView: UITableView) {
-        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
-        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.footer)
+        tableView.register(CustomHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.header)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")! as! CustomHeaderFooterView
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.footer)! as! CustomHeaderFooterView
         let title = tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section)
         headerFooterView.customTitleLabel.text = title
         return headerFooterView
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header")! as! CustomHeaderFooterView
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.header)! as! CustomHeaderFooterView
         let title = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section)
         headerFooterView.customTitleLabel.text = title
         return headerFooterView
@@ -190,18 +205,23 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
 
 class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
+    struct ReuseIdentifiers {
+        static let header = "DSHeader"
+        static let footer = "DSFooter"
+    }
+    
     func prepare(_ tableView: UITableView) {
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Footer")
-        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: "Header")
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.footer)
+        tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.header)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Footer")
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.footer)
         return headerFooterView
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "Header")
+        let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.header)
         return headerFooterView
     }
     
@@ -238,8 +258,6 @@ class MasterViewController: UITableViewController {
         case dynamic(subkind: DynamicSubKind)
     }
     
-    var delegateKind: DelegateKind = .none
-
     func newTableViewDelegate() -> UITableViewDelegate? {
         switch delegateKind {
         case .none:
@@ -361,6 +379,8 @@ class MasterViewController: UITableViewController {
 	
 	// MARK: -
 
+    var delegateKind: DelegateKind = _true ? .none : .dynamic(subkind: .custom)
+    
 	@IBOutlet var delegateKindBarItem: UIBarButtonItem!
 	
 	func updateDelegateKindBarItem() {
