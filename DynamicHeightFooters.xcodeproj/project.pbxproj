@@ -13,6 +13,7 @@
 		A11DDB0E1E8AE6680073FCBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A11DDB0D1E8AE6680073FCBB /* Assets.xcassets */; };
 		A11DDB111E8AE6680073FCBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A11DDB0F1E8AE6680073FCBB /* LaunchScreen.storyboard */; };
 		C42A2E211E8FB2F600263F4E /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42A2E201E8FB2F600263F4E /* Localized.swift */; };
+		C4E4D7D91E90BB1A004E9170 /* TunaXcodePlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A11DDB101E8AE6680073FCBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11DDB121E8AE6680073FCBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C42A2E201E8FB2F600263F4E /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
+		C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TunaXcodePlugIn.swift; path = XcodeSupport/TunaXcodePlugIn.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				A11DDB0A1E8AE6680073FCBB /* Main.storyboard */,
 				A11DDB0D1E8AE6680073FCBB /* Assets.xcassets */,
 				A11DDB0F1E8AE6680073FCBB /* LaunchScreen.storyboard */,
+				C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */,
 				A11DDB121E8AE6680073FCBB /* Info.plist */,
 			);
 			path = DynamicHeightFooters;
@@ -142,6 +145,7 @@
 			files = (
 				A11DDB071E8AE6680073FCBB /* MasterViewController.swift in Sources */,
 				C42A2E211E8FB2F600263F4E /* Localized.swift in Sources */,
+				C4E4D7D91E90BB1A004E9170 /* TunaXcodePlugIn.swift in Sources */,
 				A11DDB051E8AE6680073FCBB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
