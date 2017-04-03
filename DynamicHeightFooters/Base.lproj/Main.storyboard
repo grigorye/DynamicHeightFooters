@@ -159,7 +159,7 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Zdf-7t-Un8">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" title="LB: WW" id="Jr3-Zh-3yh">
+                        <barButtonItem key="leftBarButtonItem" title="LB:WW" id="Jr3-Zh-3yh">
                             <connections>
                                 <action selector="toggleLineBreakMode" destination="7bK-jq-Zjz" id="E1p-NJ-BY2"/>
                             </connections>
@@ -193,10 +193,16 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
+                            <barButtonItem title="DK:-" id="Wib-NI-tpE">
+                                <connections>
+                                    <action selector="toggleDelegateKind" destination="7bK-jq-Zjz" id="uMs-qY-FQv"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="customCellsBarItem" destination="sym-KY-nYG" id="9qR-UC-Gx9"/>
+                        <outlet property="delegateKindBarItem" destination="Wib-NI-tpE" id="GFD-08-OUe"/>
                         <outlet property="estimatedHeightBarItem" destination="zyB-6F-v8u" id="XMm-az-xVI"/>
                         <outlet property="estimatedHeightStepper" destination="gH4-nl-pHp" id="tuB-N3-xt5"/>
                         <outlet property="footersBarItem" destination="ISM-wa-heE" id="Uz5-Bd-hSB"/>

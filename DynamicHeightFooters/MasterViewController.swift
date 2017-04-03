@@ -8,13 +8,13 @@
 
 import UIKit
 
-var customCellsEnabled = false
+private var customCellsEnabled = false
 
-var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
+private var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
 
-var estimatedHeight: CGFloat = 2.0 //!!!
+private var estimatedHeight: CGFloat = 2.0 //!!!
 
-var estimatedRowHeight: CGFloat {
+private var estimatedRowHeight: CGFloat {
 	return estimatedHeight
 }
 
@@ -238,9 +238,9 @@ class MasterViewController: UITableViewController {
         case dynamic(subkind: DynamicSubKind)
     }
     
-    static let delegateKind: DelegateKind = .dynamic(subkind: .custom)
+    var delegateKind: DelegateKind = .none
 
-    lazy var tableViewDelegate: UITableViewDelegate? = {
+    func newTableViewDelegate() -> UITableViewDelegate? {
         switch delegateKind {
         case .none:
             return nil
@@ -261,18 +261,23 @@ class MasterViewController: UITableViewController {
                 }(DynamicStandardFooterTableViewDelegate())
             }
         }
-    }()
+    }
 
     let tableViewDataSource = TableViewDataSource()
-    
+	lazy var tableViewDelegate: UITableViewDelegate? = self.newTableViewDelegate()
+	
+	func updateForTableViewDelegate() {
+		tableView.delegate = tableViewDelegate
+		tableView.reloadData()
+	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		updateFootersBarItem()
 		updateHeadersBarItem()
 		updateCustomCellsBarItem()
-        tableView.dataSource = tableViewDataSource
-        tableView.delegate = tableViewDelegate
-        tableView.reloadData()
+		tableView.dataSource = tableViewDataSource
+		tableView.delegate = tableViewDelegate
     }
     
     // MARK: -
@@ -353,4 +358,27 @@ class MasterViewController: UITableViewController {
         updateEstimatedHeightBarItem()
         tableView.reloadData()
     }
+	
+	// MARK: -
+
+	@IBOutlet var delegateKindBarItem: UIBarButtonItem!
+	
+	func updateDelegateKindBarItem() {
+		delegateKindBarItem.title = L.delegateKindBarItemTitle(for: delegateKind)
+	}
+	
+	@IBAction func toggleDelegateKind() {
+		switch delegateKind {
+		case .dynamic(_):
+			delegateKind = .none
+		case .none:
+			delegateKind = .dynamic(subkind: .custom)
+		default:
+			fatalError()
+		}
+		updateDelegateKindBarItem()
+		tableViewDelegate = newTableViewDelegate()
+		updateForTableViewDelegate()
+	}
+	
 }
