@@ -223,4 +223,24 @@ extension MasterViewController {
         headerFooterView.textLabel?.backgroundColor = footerColor
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard customCellsEnabled else {
+            return 44 //!!!
+        }
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard customCellsEnabled else {
+            return 0
+        }
+        guard 1 <= estimatedRowHeight else {
+            return 0
+        }
+        guard 2 < estimatedRowHeight else {
+            return 2
+        }
+        return estimatedRowHeight //!!!
+    }
+    
 }
