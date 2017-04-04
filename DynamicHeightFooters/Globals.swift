@@ -12,7 +12,9 @@ var customCellsEnabled = false
 
 var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
 
-var estimatedHeight: CGFloat = 2.0 //!!!
+var estimatedHeight: CGFloat = 2 //!!! Works even for `excludeMarginsForHeightEstimate = true`, if you constraint against exactly content view bounds (with no inset), not against margins.
+
+var excludeMarginsFromHeightEstimate = false ///!!!
 
 var estimatedRowHeight: CGFloat {
     return estimatedHeight
