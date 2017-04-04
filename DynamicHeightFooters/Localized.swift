@@ -27,13 +27,15 @@ extension Localized {
 		}()
 	}
 	
-	static func delegateKindBarItemTitle(for delegateKind: MasterViewController.DelegateKind) -> String {
+	static func delegateKindBarItemTitle(for delegateKind: DelegateKind) -> String {
 		return "DK:" + {
 			switch delegateKind {
 			case .none:
 				return "-"
-			case .dynamic(_):
-				return "D"
+            case .dynamic(subkind: .custom):
+                return "D"
+            case .dynamic(subkind: .standard):
+                return "S"
             case .viewController:
                 return "V"
 			}
