@@ -4,14 +4,14 @@ My attempt to investigate application of autolayout for table view section heade
 
 ## Intro
 
-Tap "DK:" button to change the kind of table view delegate:
+Tap `DK:` button to change the kind of table view delegate:
 
-* "-" `nil` delegate
-* "D" custom delegate (custom, enables custom dynamic height sections/footers)
-* "S" custom delegate that tries to use standard table header view, without adding constraints/custom view and etc. (Does not work so far).
-* "V" view controller (default for `UITableViewController`)
+* `-`: nil delegate
+* `D`: custom delegate (custom, enables custom dynamic height sections/footers)
+* `S`: custom delegate that tries to use standard table header view, without adding constraints/custom view and etc. (Does not work so far).
+* `V`: view controller (default for `UITableViewController`)
 
-Note: `nil` delegate does not work after other delegates are being set, so it is the initial delegate.
+Note: nil delegate does not work after other delegates are being set, so it is currently the initial delegate after launch.
 
 Each header should show a set of lines like hN-0..hN-N where N is the section index. Same story with fN-0..fN-N (section footers) and 0-sN..N-sN (single cell inside every section when custom cells are enabled) or sN (for standard cells). If you don't see the whole text, or some lines are "missing" it means that they were clipped due to incorrect layout.
 
@@ -19,12 +19,14 @@ Each header should show a set of lines like hN-0..hN-N where N is the section in
 
 I just tried to put all the configuration on screen to be able to identify the configuration on the screenshot.
 
-* "DK:" toggles between different delegate kinds (see above)
-* "Margins": enables accounting layout margins in estimated heights
-* "Footers", "Headers": toggles footers/headers
-* "M:" stepper for changing _top margin_ above every section _header_ (Just to see what happens (read: breaks) for different margin values).
-* "E:" stepper for changing estimated height value for both section header and footer.
-* "C" toggles custom (dynamic height) *cells*
+* `DK:`: toggles between different delegate kinds (see above)
+* `Margins`: enables accounting layout margins in estimated heights
+* `Footers`, `Headers`: toggle footers/headers
+* `M:`: stepper for changing _top margin_ above every section _header_ (Just to see what happens (read: breaks) for different margin values).
+* `E:`: stepper for changing estimated height value for both section header and footer.
+   * If "Margins" is disabled, the value shown is either used as is for the estimated height value (this is not good).
+   * If "Margins" is enabled, the value shown will be summed with height of vertical margins for the section/footer and the result will be used as the estimated height.
+* `C`: toggles custom (dynamic height) *cells*
 
 ## What should work
 
