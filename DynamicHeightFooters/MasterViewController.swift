@@ -61,6 +61,8 @@ class MasterViewController: UITableViewController {
         updateCustomCellsBarItem()
         updateEstimatedHeightBarItem()
         updateEstimatedHeightStepper()
+        updateHeaderTopMarginBarItem()
+        updateHeaderTopMarginStepper()
         tableView.dataSource = tableViewDataSource
         tableView.delegate = tableViewDelegate
     }
@@ -147,9 +149,9 @@ class MasterViewController: UITableViewController {
     
     @IBOutlet var estimatedHeightStepper: UIStepper!
     @IBOutlet var estimatedHeightBarItem: UIBarButtonItem!
-
+    
     func updateEstimatedHeightBarItem() {
-        estimatedHeightBarItem.title = "\(estimatedHeight)"
+        estimatedHeightBarItem.title = "E:\(Int(estimatedHeight))"
     }
     
     func updateEstimatedHeightStepper() {
@@ -159,6 +161,25 @@ class MasterViewController: UITableViewController {
     @IBAction func estimatedHeightStepperValueChanged() {
         estimatedHeight = CGFloat(estimatedHeightStepper.value)
         updateEstimatedHeightBarItem()
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var headerTopMarginStepper: UIStepper!
+    @IBOutlet var headerTopMarginBarItem: UIBarButtonItem!
+    
+    func updateHeaderTopMarginBarItem() {
+        headerTopMarginBarItem.title = "M:\(Int(headerTopMargin))"
+    }
+    
+    func updateHeaderTopMarginStepper() {
+        headerTopMarginStepper.value = Double(headerTopMargin)
+    }
+    
+    @IBAction func headerTopMarginStepperValueChanged() {
+        headerTopMargin = CGFloat(headerTopMarginStepper.value)
+        updateHeaderTopMarginBarItem()
         tableView.reloadData()
     }
     
