@@ -328,6 +328,7 @@ class MasterViewController: UITableViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateDelegateKindBarItem()
 		updateFootersBarItem()
 		updateHeadersBarItem()
 		updateCustomCellsBarItem()
@@ -422,7 +423,7 @@ class MasterViewController: UITableViewController {
 	
 	// MARK: -
 
-    var delegateKind: DelegateKind = _false ? .viewController : .dynamic(subkind: .custom)
+    var delegateKind: DelegateKind = _true ? .none : .dynamic(subkind: .custom)
     
 	@IBOutlet var delegateKindBarItem: UIBarButtonItem!
 	
@@ -432,12 +433,12 @@ class MasterViewController: UITableViewController {
 	
 	@IBAction func toggleDelegateKind() {
 		switch delegateKind {
-		case .dynamic(_):
-			delegateKind = .viewController
+        case .dynamic(_):
+            delegateKind = .none
 		case .viewController:
 			delegateKind = .dynamic(subkind: .custom)
-		default:
-			fatalError()
+        case .none:
+            delegateKind = .viewController
 		}
 		updateDelegateKindBarItem()
 		tableViewDelegate = newTableViewDelegate()
