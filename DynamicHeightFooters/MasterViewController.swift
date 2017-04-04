@@ -18,58 +18,25 @@ private var estimatedRowHeight: CGFloat {
 	return estimatedHeight
 }
 
+private let headerColor = UIColor.yellow
+private let footerColor = UIColor.cyan
+
 var _true = true
-var _false = true
+var _false = false
+
+infix operator …
+
+func …<T>(_ initialValue: T, initialize: (inout T) -> ()) -> T {
+    var value = initialValue
+    initialize(&value)
+    return value
+}
 
 typealias L = Localized
 
 class CustomTableViewCell : UITableViewCell {
     
     @IBOutlet var customTitleLabel: UILabel!
-    
-}
-
-class CustomHeaderFooterView : UITableViewHeaderFooterView {
-
-    var customTitleLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.numberOfLines = 0
-        $0.font = UIFont.systemFont(ofSize: 30)
-        $0.lineBreakMode = lineBreakMode
-        return $0
-    } (UILabel())
-    
-    func prepareForUse() {
-        textLabel!.isHidden = true
-        contentView.addSubview(customTitleLabel)
-		assert(preservesSuperviewLayoutMargins)
-		assert(contentView.preservesSuperviewLayoutMargins)
-        assert(self.translatesAutoresizingMaskIntoConstraints)
-        assert(contentView.translatesAutoresizingMaskIntoConstraints)
-        assert(contentView.autoresizesSubviews)
-        NSLayoutConstraint.activate({
-            let layoutMarginsGuide = contentView.layoutMarginsGuide
-			let otherItemsAndAttirbutes: [(item: Any, attribute: NSLayoutAttribute)] = [
-				(layoutMarginsGuide, .trailing), //!!!
-                (layoutMarginsGuide, .leading), //!!!
-                (contentView, .topMargin), //!!!
-                (contentView, .bottomMargin) //!!!
-            ]
-            return otherItemsAndAttirbutes.map {
-                NSLayoutConstraint(item: customTitleLabel, attribute: $0.attribute, relatedBy: .equal, toItem: $0.item, attribute: $0.attribute, multiplier: 1, constant: 0)
-            }
-        }())
-    }
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        prepareForUse()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        prepareForUse()
-    }
     
 }
 
@@ -122,6 +89,66 @@ class TableViewDataSource : NSObject, UITableViewDataSource {
 
 class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
+    typealias _Self = DynamicCustomFooterTableViewDelegate
+
+    static let verticalHeaderMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    static let verticalFooterMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    
+    var minimumHeaderHeight: CGFloat {
+        return _Self.verticalHeaderMargins.top + _Self.verticalHeaderMargins.bottom
+    }
+    var minimumFooterHeight: CGFloat {
+        return _Self.verticalFooterMargins.top + _Self.verticalFooterMargins.bottom
+    }
+    
+    class CustomHeaderFooterView : UITableViewHeaderFooterView {
+        
+        var customTitleLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.numberOfLines = 0
+            $0.font = UIFont.systemFont(ofSize: 30)
+            $0.lineBreakMode = lineBreakMode
+            return $0
+        }(UILabel())
+        
+        func prepareForUse() {
+            textLabel!.isHidden = true
+            assert(preservesSuperviewLayoutMargins)
+            assert(contentView.preservesSuperviewLayoutMargins)
+            assert(self.translatesAutoresizingMaskIntoConstraints)
+            assert(contentView.translatesAutoresizingMaskIntoConstraints)
+            assert(contentView.autoresizesSubviews)
+            let isHeader = (self.reuseIdentifier! == DynamicCustomFooterTableViewDelegate.ReuseIdentifiers.header)
+            customTitleLabel.backgroundColor = isHeader ? headerColor : footerColor
+            let embeddedView = customTitleLabel
+            contentView.addSubview(embeddedView)
+            contentView.layoutMargins = contentView.layoutMargins … {
+                let verticalMargins = isHeader ? verticalHeaderMargins : verticalFooterMargins
+                $0.top = verticalMargins.top
+                $0.bottom = verticalMargins.bottom
+            }
+            let margins = contentView.layoutMarginsGuide
+            let constraints = [
+                margins.leadingAnchor.constraint(equalTo: embeddedView.leadingAnchor),
+                margins.trailingAnchor.constraint(equalTo: embeddedView.trailingAnchor),
+                embeddedView.topAnchor.constraint(equalTo: margins.topAnchor),
+                margins.bottomAnchor.constraint(equalTo: embeddedView.bottomAnchor)
+            ]
+            NSLayoutConstraint.activate(constraints)
+        }
+        
+        override init(reuseIdentifier: String?) {
+            super.init(reuseIdentifier: reuseIdentifier)
+            prepareForUse()
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+            prepareForUse()
+        }
+        
+    }
+    
     struct ReuseIdentifiers {
         static let header = "DCHeader"
         static let footer = "DCFooter"
@@ -136,6 +163,10 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.footersEnabled else {
+            return nil
+        }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.footer)! as! CustomHeaderFooterView
         let title = tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section)
         headerFooterView.customTitleLabel.text = title
@@ -143,6 +174,10 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let dataSource = tableView.dataSource! as! TableViewDataSource
+        guard dataSource.headersEnabled else {
+            return nil
+        }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.header)! as! CustomHeaderFooterView
         let title = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section)
         headerFooterView.customTitleLabel.text = title
@@ -190,7 +225,7 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard dataSource.footersEnabled else {
             return 0
         }
-        return estimatedHeight
+        return (estimatedHeight + minimumFooterHeight)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -198,7 +233,7 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard dataSource.headersEnabled else {
             return 0
         }
-        return estimatedHeight
+        return (estimatedHeight + minimumHeaderHeight)
     }
 
 }
@@ -294,6 +329,8 @@ class MasterViewController: UITableViewController {
 		updateFootersBarItem()
 		updateHeadersBarItem()
 		updateCustomCellsBarItem()
+        updateEstimatedHeightBarItem()
+        updateEstimatedHeightStepper()
 		tableView.dataSource = tableViewDataSource
 		tableView.delegate = tableViewDelegate
     }
@@ -371,6 +408,10 @@ class MasterViewController: UITableViewController {
         estimatedHeightBarItem.title = "\(estimatedHeight)"
     }
     
+    func updateEstimatedHeightStepper() {
+        estimatedHeightStepper.value = Double(estimatedHeight)
+    }
+    
     @IBAction func estimatedHeightStepperValueChanged() {
         estimatedHeight = CGFloat(estimatedHeightStepper.value)
         updateEstimatedHeightBarItem()
@@ -379,7 +420,7 @@ class MasterViewController: UITableViewController {
 	
 	// MARK: -
 
-    var delegateKind: DelegateKind = _true ? .none : .dynamic(subkind: .custom)
+    var delegateKind: DelegateKind = _false ? .viewController : .dynamic(subkind: .custom)
     
 	@IBOutlet var delegateKindBarItem: UIBarButtonItem!
 	
@@ -390,8 +431,8 @@ class MasterViewController: UITableViewController {
 	@IBAction func toggleDelegateKind() {
 		switch delegateKind {
 		case .dynamic(_):
-			delegateKind = .none
-		case .none:
+			delegateKind = .viewController
+		case .viewController:
 			delegateKind = .dynamic(subkind: .custom)
 		default:
 			fatalError()
@@ -401,4 +442,18 @@ class MasterViewController: UITableViewController {
 		updateForTableViewDelegate()
 	}
 	
+}
+
+extension MasterViewController {
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let headerFooterView = view as! UITableViewHeaderFooterView
+        headerFooterView.textLabel?.backgroundColor = headerColor
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let headerFooterView = view as! UITableViewHeaderFooterView
+        headerFooterView.textLabel?.backgroundColor = footerColor
+    }
+    
 }
