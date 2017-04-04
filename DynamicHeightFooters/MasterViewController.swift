@@ -159,12 +159,14 @@ class MasterViewController: UITableViewController {
     
     @IBAction func toggleDelegateKind() {
         switch delegateKind {
-        case .dynamic(_):
-            delegateKind = .none
-        case .viewController:
-            delegateKind = .dynamic(subkind: .custom)
         case .none:
             delegateKind = .viewController
+        case .viewController:
+            delegateKind = .dynamic(subkind: .custom)
+        case .dynamic(subkind: .custom):
+            delegateKind = .dynamic(subkind: .standard)
+        case .dynamic(subkind: .standard):
+            delegateKind = .none
         }
         updateDelegateKindBarItem()
         tableViewDelegate = newTableViewDelegate()
