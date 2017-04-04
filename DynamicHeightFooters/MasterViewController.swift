@@ -32,6 +32,11 @@ func …<T>(_ initialValue: T, initialize: (inout T) -> ()) -> T {
     return value
 }
 
+func …<T: AnyObject>(_ object: T, initialize: (T) -> ()) -> T {
+    initialize(object)
+    return object
+}
+
 typealias L = Localized
 
 class CustomTableViewCell : UITableViewCell {
@@ -103,13 +108,12 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
     class CustomHeaderFooterView : UITableViewHeaderFooterView {
         
-        var customTitleLabel: UILabel = {
+        var customTitleLabel = UILabel() … {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.numberOfLines = 0
             $0.font = UIFont.systemFont(ofSize: 30)
             $0.lineBreakMode = lineBreakMode
-            return $0
-        }(UILabel())
+        }
         
         func prepareForUse() {
             textLabel!.isHidden = true
@@ -303,15 +307,13 @@ class MasterViewController: UITableViewController {
             let tableView = self.tableView!
             switch dynamicSubkind {
             case .custom:
-                return {
+                return DynamicCustomFooterTableViewDelegate() … {
                     $0.prepare(tableView)
-                    return $0
-                }(DynamicCustomFooterTableViewDelegate())
+                }
             case .standard:
-                return {
+                return DynamicStandardFooterTableViewDelegate() … {
                     $0.prepare(tableView)
-                    return $0
-                }(DynamicStandardFooterTableViewDelegate())
+                }
             }
         }
     }
