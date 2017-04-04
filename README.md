@@ -4,6 +4,8 @@ My attempt to investigate application of autolayout for table view section heade
 
 ## Intro
 
+![Custom Layout](Screenshots/CustomLayout.png)
+
 Tap `DK:` button to change the kind of table view delegate:
 
 * `-`: nil delegate
