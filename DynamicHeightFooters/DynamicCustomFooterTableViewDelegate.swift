@@ -15,10 +15,11 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     static let verticalHeaderMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     static let verticalFooterMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     
-    var minimumHeaderHeight: CGFloat {
+    var headerMarginsHeight: CGFloat {
         return _Self.verticalHeaderMargins.top + _Self.verticalHeaderMargins.bottom
     }
-    var minimumFooterHeight: CGFloat {
+    
+    var footerMarginsHeight: CGFloat {
         return _Self.verticalFooterMargins.top + _Self.verticalFooterMargins.bottom
     }
     
@@ -145,7 +146,10 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard dataSource.footersEnabled else {
             return 0
         }
-        return (estimatedHeight + minimumFooterHeight)
+        guard !excludeMarginsFromHeightEstimate else {
+            return estimatedHeight
+        }
+        return (estimatedHeight + footerMarginsHeight)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -153,7 +157,10 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard dataSource.headersEnabled else {
             return 0
         }
-        return (estimatedHeight + minimumHeaderHeight)
+        guard !excludeMarginsFromHeightEstimate else {
+            return estimatedHeight
+        }
+        return (estimatedHeight + headerMarginsHeight)
     }
     
 }
