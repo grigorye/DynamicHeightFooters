@@ -15,7 +15,7 @@ private var lineBreakMode: NSLineBreakMode = .byWordWrapping //!!!
 private var estimatedHeight: CGFloat = 2.0 //!!!
 
 private var estimatedRowHeight: CGFloat {
-	return estimatedHeight
+    return estimatedHeight
 }
 
 private let headerColor = UIColor.yellow
@@ -215,13 +215,13 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
         guard customCellsEnabled else {
             return 0
         }
-		guard 1 <= estimatedRowHeight else {
-			return 0
-		}
-		guard 2 < estimatedRowHeight else {
-			return 2
-		}
-		return estimatedRowHeight //!!!
+        guard 1 <= estimatedRowHeight else {
+            return 0
+        }
+        guard 2 < estimatedRowHeight else {
+            return 2
+        }
+        return estimatedRowHeight //!!!
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
@@ -319,23 +319,23 @@ class MasterViewController: UITableViewController {
     }
 
     let tableViewDataSource = TableViewDataSource()
-	lazy var tableViewDelegate: UITableViewDelegate? = self.newTableViewDelegate()
-	
-	func updateForTableViewDelegate() {
-		tableView.delegate = tableViewDelegate
-		tableView.reloadData()
-	}
-	
+    lazy var tableViewDelegate: UITableViewDelegate? = self.newTableViewDelegate()
+    
+    func updateForTableViewDelegate() {
+        tableView.delegate = tableViewDelegate
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateDelegateKindBarItem()
-		updateFootersBarItem()
-		updateHeadersBarItem()
-		updateCustomCellsBarItem()
+        updateFootersBarItem()
+        updateHeadersBarItem()
+        updateCustomCellsBarItem()
         updateEstimatedHeightBarItem()
         updateEstimatedHeightStepper()
-		tableView.dataSource = tableViewDataSource
-		tableView.delegate = tableViewDelegate
+        tableView.dataSource = tableViewDataSource
+        tableView.delegate = tableViewDelegate
     }
     
     // MARK: -
@@ -343,9 +343,9 @@ class MasterViewController: UITableViewController {
     @IBOutlet var customCellsBarItem: UIBarButtonItem!
     
     func updateCustomCellsBarItem() {
-		(customCellsBarItem.customView as! UIButton).isSelected = customCellsEnabled
+        (customCellsBarItem.customView as! UIButton).isSelected = customCellsEnabled
     }
-	
+    
     @IBAction func toggleCustomCells() {
         customCellsEnabled = !customCellsEnabled
         updateCustomCellsBarItem()
@@ -357,9 +357,9 @@ class MasterViewController: UITableViewController {
     @IBOutlet var footersBarItem: UIBarButtonItem!
     
     func updateFootersBarItem() {
-		(footersBarItem.customView as! UIButton).isSelected = tableViewDataSource.footersEnabled
+        (footersBarItem.customView as! UIButton).isSelected = tableViewDataSource.footersEnabled
     }
-	
+    
     @IBAction func toggleFooters() {
         tableViewDataSource.footersEnabled = !tableViewDataSource.footersEnabled
         updateFootersBarItem()
@@ -371,7 +371,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var headersBarItem: UIBarButtonItem!
     
     func updateHeadersBarItem() {
-		(headersBarItem.customView as! UIButton).isSelected = tableViewDataSource.headersEnabled
+        (headersBarItem.customView as! UIButton).isSelected = tableViewDataSource.headersEnabled
     }
     @IBAction func toggleHeaders() {
         tableViewDataSource.headersEnabled = !tableViewDataSource.headersEnabled
@@ -384,7 +384,7 @@ class MasterViewController: UITableViewController {
     @IBOutlet var lineBreakModeItem: UIBarButtonItem!
     
     func updateLineBreakModeItem() {
-		lineBreakModeItem.title = L.lineBreakModeBarItemTitle(for: lineBreakMode)
+        lineBreakModeItem.title = L.lineBreakModeBarItemTitle(for: lineBreakMode)
     }
     
     @IBAction func toggleLineBreakMode() {
@@ -420,31 +420,31 @@ class MasterViewController: UITableViewController {
         updateEstimatedHeightBarItem()
         tableView.reloadData()
     }
-	
-	// MARK: -
+    
+    // MARK: -
 
     var delegateKind: DelegateKind = _true ? .none : .dynamic(subkind: .custom)
     
-	@IBOutlet var delegateKindBarItem: UIBarButtonItem!
-	
-	func updateDelegateKindBarItem() {
-		delegateKindBarItem.title = L.delegateKindBarItemTitle(for: delegateKind)
-	}
-	
-	@IBAction func toggleDelegateKind() {
-		switch delegateKind {
+    @IBOutlet var delegateKindBarItem: UIBarButtonItem!
+    
+    func updateDelegateKindBarItem() {
+        delegateKindBarItem.title = L.delegateKindBarItemTitle(for: delegateKind)
+    }
+    
+    @IBAction func toggleDelegateKind() {
+        switch delegateKind {
         case .dynamic(_):
             delegateKind = .none
-		case .viewController:
-			delegateKind = .dynamic(subkind: .custom)
+        case .viewController:
+            delegateKind = .dynamic(subkind: .custom)
         case .none:
             delegateKind = .viewController
-		}
-		updateDelegateKindBarItem()
-		tableViewDelegate = newTableViewDelegate()
-		updateForTableViewDelegate()
-	}
-	
+        }
+        updateDelegateKindBarItem()
+        tableViewDelegate = newTableViewDelegate()
+        updateForTableViewDelegate()
+    }
+    
 }
 
 extension MasterViewController {
