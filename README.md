@@ -15,7 +15,7 @@ Note: `nil` delegate does not work after other delegates are being set, so it is
 
 Each header should show a set of lines like hN-0..hN-N where N is the section index. Same story with fN-0..fN-N (section footers) and 0-sN..N-sN (single cell inside every section when custom cells are enabled) or sN (for standard cells). If you don't see the whole text, or some lines are "missing" it means that they were clipped due to incorrect layout.
 
-# Buttons
+# Controls
 
 I just tried to put all the configuration on screen to be able to identify the configuration on the screenshot.
 
