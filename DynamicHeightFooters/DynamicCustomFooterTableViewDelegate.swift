@@ -12,8 +12,12 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
     typealias _Self = DynamicCustomFooterTableViewDelegate
     
-    static let verticalHeaderMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-    static let verticalFooterMargins: UIEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    static var verticalHeaderMargins: UIEdgeInsets {
+        return UIEdgeInsets(top: headerTopMargin, left: 0, bottom: 8, right: 0)
+    }
+    static var verticalFooterMargins: UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+    }
     
     var headerMarginsHeight: CGFloat {
         return _Self.verticalHeaderMargins.top + _Self.verticalHeaderMargins.bottom
@@ -43,11 +47,6 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
             customTitleLabel.backgroundColor = isHeader ? headerColor : footerColor
             let embeddedView = customTitleLabel
             contentView.addSubview(embeddedView)
-            contentView.layoutMargins = contentView.layoutMargins … {
-                let verticalMargins = isHeader ? verticalHeaderMargins : verticalFooterMargins
-                $0.top = verticalMargins.top
-                $0.bottom = verticalMargins.bottom
-            }
             let margins = contentView.layoutMarginsGuide
             let constraints = [
                 margins.leadingAnchor.constraint(equalTo: embeddedView.leadingAnchor),
@@ -89,6 +88,11 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
             return nil
         }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.footer)! as! CustomHeaderFooterView
+        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins … {
+            let verticalMargins = _Self.verticalFooterMargins
+            $0.top = verticalMargins.top
+            $0.bottom = verticalMargins.bottom
+        }
         let title = tableView.dataSource?.tableView?(tableView, titleForFooterInSection: section)
         headerFooterView.customTitleLabel.text = title
         return headerFooterView
@@ -100,6 +104,11 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
             return nil
         }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.header)! as! CustomHeaderFooterView
+        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins … {
+            let verticalMargins = _Self.verticalHeaderMargins
+            $0.top = verticalMargins.top
+            $0.bottom = verticalMargins.bottom
+        }
         let title = tableView.dataSource?.tableView?(tableView, titleForHeaderInSection: section)
         headerFooterView.customTitleLabel.text = title
         return headerFooterView
