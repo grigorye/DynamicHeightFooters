@@ -12,6 +12,11 @@
 		A11DDB0C1E8AE6680073FCBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A11DDB0A1E8AE6680073FCBB /* Main.storyboard */; };
 		A11DDB0E1E8AE6680073FCBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A11DDB0D1E8AE6680073FCBB /* Assets.xcassets */; };
 		A11DDB111E8AE6680073FCBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A11DDB0F1E8AE6680073FCBB /* LaunchScreen.storyboard */; };
+		A134E5D01E93FF20008F1988 /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E5CF1E93FF20008F1988 /* TableViewDataSource.swift */; };
+		A134E5D21E93FF48008F1988 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E5D11E93FF48008F1988 /* Globals.swift */; };
+		A134E5D41E93FF80008F1988 /* DynamicCustomFooterTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E5D31E93FF80008F1988 /* DynamicCustomFooterTableViewDelegate.swift */; };
+		A134E5D61E93FFB7008F1988 /* DynamicStandardFooterTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E5D51E93FFB7008F1988 /* DynamicStandardFooterTableViewDelegate.swift */; };
+		A134E5D81E93FFF7008F1988 /* ExternalDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E5D71E93FFF7008F1988 /* ExternalDependencies.swift */; };
 		C42A2E211E8FB2F600263F4E /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42A2E201E8FB2F600263F4E /* Localized.swift */; };
 		C4E4D7D91E90BB1A004E9170 /* TunaXcodePlugIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +29,11 @@
 		A11DDB0D1E8AE6680073FCBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A11DDB101E8AE6680073FCBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11DDB121E8AE6680073FCBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A134E5CF1E93FF20008F1988 /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
+		A134E5D11E93FF48008F1988 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
+		A134E5D31E93FF80008F1988 /* DynamicCustomFooterTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicCustomFooterTableViewDelegate.swift; sourceTree = "<group>"; };
+		A134E5D51E93FFB7008F1988 /* DynamicStandardFooterTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicStandardFooterTableViewDelegate.swift; sourceTree = "<group>"; };
+		A134E5D71E93FFF7008F1988 /* ExternalDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExternalDependencies.swift; sourceTree = "<group>"; };
 		C42A2E201E8FB2F600263F4E /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TunaXcodePlugIn.swift; path = XcodeSupport/TunaXcodePlugIn.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -58,10 +68,15 @@
 		A11DDB031E8AE6680073FCBB /* DynamicHeightFooters */ = {
 			isa = PBXGroup;
 			children = (
-				A11DDB041E8AE6680073FCBB /* AppDelegate.swift */,
 				A11DDB061E8AE6680073FCBB /* MasterViewController.swift */,
+				A134E5D31E93FF80008F1988 /* DynamicCustomFooterTableViewDelegate.swift */,
+				A134E5D11E93FF48008F1988 /* Globals.swift */,
+				A134E5CF1E93FF20008F1988 /* TableViewDataSource.swift */,
 				C42A2E201E8FB2F600263F4E /* Localized.swift */,
+				A134E5D71E93FFF7008F1988 /* ExternalDependencies.swift */,
+				A11DDB041E8AE6680073FCBB /* AppDelegate.swift */,
 				A11DDB0A1E8AE6680073FCBB /* Main.storyboard */,
+				A134E5D51E93FFB7008F1988 /* DynamicStandardFooterTableViewDelegate.swift */,
 				A11DDB0D1E8AE6680073FCBB /* Assets.xcassets */,
 				A11DDB0F1E8AE6680073FCBB /* LaunchScreen.storyboard */,
 				C4E4D7D81E90BB1A004E9170 /* TunaXcodePlugIn.swift */,
@@ -144,9 +159,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A11DDB071E8AE6680073FCBB /* MasterViewController.swift in Sources */,
+				A134E5D01E93FF20008F1988 /* TableViewDataSource.swift in Sources */,
+				A134E5D61E93FFB7008F1988 /* DynamicStandardFooterTableViewDelegate.swift in Sources */,
+				A134E5D21E93FF48008F1988 /* Globals.swift in Sources */,
+				A134E5D41E93FF80008F1988 /* DynamicCustomFooterTableViewDelegate.swift in Sources */,
 				C42A2E211E8FB2F600263F4E /* Localized.swift in Sources */,
 				C4E4D7D91E90BB1A004E9170 /* TunaXcodePlugIn.swift in Sources */,
 				A11DDB051E8AE6680073FCBB /* AppDelegate.swift in Sources */,
+				A134E5D81E93FFF7008F1988 /* ExternalDependencies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
