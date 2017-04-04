@@ -159,11 +159,27 @@
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="Zdf-7t-Un8">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" title="LB:WW" id="Jr3-Zh-3yh">
-                            <connections>
-                                <action selector="toggleLineBreakMode" destination="7bK-jq-Zjz" id="E1p-NJ-BY2"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem title="DK:-" id="Wib-NI-tpE">
+                                <connections>
+                                    <action selector="toggleDelegateKind" destination="7bK-jq-Zjz" id="uMs-qY-FQv"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem id="MlR-hS-eFX">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1bf-wF-VEv">
+                                    <rect key="frame" x="60" y="5" width="62" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <state key="normal" title="Margins"/>
+                                    <state key="selected">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="toggleIncludeMargins" destination="7bK-jq-Zjz" eventType="touchUpInside" id="DIL-na-3iv"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem id="rFr-Ia-l7n">
                                 <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="peF-xu-EsQ">
@@ -193,11 +209,6 @@
                                     </connections>
                                 </button>
                             </barButtonItem>
-                            <barButtonItem title="DK:-" id="Wib-NI-tpE">
-                                <connections>
-                                    <action selector="toggleDelegateKind" destination="7bK-jq-Zjz" id="uMs-qY-FQv"/>
-                                </connections>
-                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -207,10 +218,16 @@
                         <outlet property="estimatedHeightStepper" destination="gH4-nl-pHp" id="tuB-N3-xt5"/>
                         <outlet property="footersBarItem" destination="ISM-wa-heE" id="Uz5-Bd-hSB"/>
                         <outlet property="headersBarItem" destination="rFr-Ia-l7n" id="Goo-32-QcJ"/>
+                        <outlet property="includeMarginsBarButtonItem" destination="MlR-hS-eFX" id="YQY-fz-ZVA"/>
                         <outlet property="lineBreakModeItem" destination="Jr3-Zh-3yh" id="Asd-u0-uPZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
+                <barButtonItem title="LB:WW" id="Jr3-Zh-3yh">
+                    <connections>
+                        <action selector="toggleLineBreakMode" destination="7bK-jq-Zjz" id="E1p-NJ-BY2"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="1016.8" y="-331.48425787106447"/>
         </scene>

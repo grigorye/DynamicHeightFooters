@@ -54,6 +54,7 @@ class MasterViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateIncludeMarginsBarItem()
         updateDelegateKindBarItem()
         updateFootersBarItem()
         updateHeadersBarItem()
@@ -102,6 +103,20 @@ class MasterViewController: UITableViewController {
     @IBAction func toggleHeaders() {
         tableViewDataSource.headersEnabled = !tableViewDataSource.headersEnabled
         updateHeadersBarItem()
+        tableView.reloadData()
+    }
+    
+    // MARK: -
+    
+    @IBOutlet var includeMarginsBarButtonItem: UIBarButtonItem!
+    
+    func updateIncludeMarginsBarItem() {
+        (includeMarginsBarButtonItem.customView as! UIButton).isSelected = !excludeMarginsFromHeightEstimate
+    }
+    
+    @IBAction func toggleIncludeMargins() {
+        excludeMarginsFromHeightEstimate = !excludeMarginsFromHeightEstimate
+        updateIncludeMarginsBarItem()
         tableView.reloadData()
     }
     
