@@ -15,6 +15,9 @@ class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
         static let footer = "DSFooter"
     }
     
+    let headerMarginsHeight: CGFloat = 8 + 8 //???
+    let footerMarginsHeight: CGFloat = 8 + 8 //???
+    
     func prepare(_ tableView: UITableView) {
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.footer)
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: ReuseIdentifiers.header)
@@ -40,12 +43,24 @@ class DynamicStandardFooterTableViewDelegate : NSObject, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
         let dataSource = tableView.dataSource! as! TableViewDataSource
-        return dataSource.footersEnabled ? estimatedHeight : 0
+        guard dataSource.footersEnabled else {
+            return 0
+        }
+        guard !excludeMarginsFromHeightEstimate else {
+            return estimatedHeight
+        }
+        return (estimatedHeight + footerMarginsHeight)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         let dataSource = tableView.dataSource! as! TableViewDataSource
-        return dataSource.headersEnabled ? estimatedHeight : 0
+        guard dataSource.headersEnabled else {
+            return 0
+        }
+        guard !excludeMarginsFromHeightEstimate else {
+            return estimatedHeight
+        }
+        return (estimatedHeight + headerMarginsHeight)
     }
     
 }
