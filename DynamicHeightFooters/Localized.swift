@@ -34,8 +34,8 @@ extension Localized {
 				return "-"
 			case .dynamic(_):
 				return "D"
-			default:
-				fatalError()
+            case .viewController:
+                return "V"
 			}
 		}()
 	}
