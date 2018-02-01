@@ -88,7 +88,7 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
             return nil
         }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.footer)! as! CustomHeaderFooterView
-        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins … {
+        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins ≈ {
             let verticalMargins = _Self.verticalFooterMargins
             $0.top = verticalMargins.top
             $0.bottom = verticalMargins.bottom
@@ -104,7 +104,7 @@ class DynamicCustomFooterTableViewDelegate : NSObject, UITableViewDelegate {
             return nil
         }
         let headerFooterView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReuseIdentifiers.header)! as! CustomHeaderFooterView
-        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins … {
+        headerFooterView.contentView.layoutMargins = headerFooterView.contentView.layoutMargins ≈ {
             let verticalMargins = _Self.verticalHeaderMargins
             $0.top = verticalMargins.top
             $0.bottom = verticalMargins.bottom

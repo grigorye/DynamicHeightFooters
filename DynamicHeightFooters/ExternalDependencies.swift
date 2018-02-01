@@ -12,8 +12,9 @@ var _true = true
 var _false = false
 
 infix operator …
+infix operator ≈
 
-func …<T>(_ initialValue: T, initialize: (inout T) -> ()) -> T {
+func ≈<T>(_ initialValue: T, initialize: (inout T) -> ()) -> T {
     var value = initialValue
     initialize(&value)
     return value
